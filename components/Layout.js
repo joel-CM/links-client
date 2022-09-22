@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
-import LogIn from "../components/LogIn";
+import { useCookies } from "react-cookie";
 
 export default function Layout(props) {
-  const [showLogIn, setShowLogIn] = useState(false);
+  const router = useRouter();
+  const [cookie, setCookie, removeCookie] = useCookies(["token"]);
 
-  const handleCloseLogIn = () => setShowLogIn(false);
-  const handleShowLogIn = () => setShowLogIn(true);
+  const handleLogOut = () => {
+    removeCookie("token");
+    router.push("/");
+  };
 
   return (
     <>
@@ -16,16 +19,15 @@ export default function Layout(props) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link>Home</Nav.Link>
-              <Nav.Link onClick={handleShowLogIn}>LogIn</Nav.Link>
               <NavDropdown title="Settings" id="basic-nav-dropdown">
-                <NavDropdown.Item>LogOut</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogOut}>
+                  LogOut
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <LogIn show={showLogIn} handleClose={handleCloseLogIn} />
 
       {props.children}
     </>
