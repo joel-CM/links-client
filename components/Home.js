@@ -1,12 +1,8 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import SignUp from "../components/SignUp";
 
 export default function Home() {
-  const [showSignUp, setShowSignUp] = useState(false);
-
-  const handleCloseSignUp = () => setShowSignUp(false);
-  const handleShowSignUp = () => setShowSignUp(true);
+  const router = useRouter();
 
   return (
     <>
@@ -23,14 +19,23 @@ export default function Home() {
         </Row>
         <Row className="justify-content-center">
           <Col xs={12} md={4} className="d-grid">
-            <Button variant="outline-dark" size="sm" onClick={handleShowSignUp}>
+            <Button
+              variant="primary"
+              className="mb-3"
+              onClick={() => router.push("/login")}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="outline-dark"
+              className="mb-4"
+              onClick={() => router.push("/signup")}
+            >
               Sign Up
             </Button>
           </Col>
         </Row>
       </Container>
-      {/* Sign Up component */}
-      <SignUp show={showSignUp} handleClose={handleCloseSignUp} />
     </>
   );
 }
