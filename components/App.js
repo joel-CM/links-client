@@ -1,15 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useCookies } from "react-cookie";
 
-export default function App() {
-  const [cookies] = useCookies();
+export default function App({ user }) {
+  user = JSON.parse(user);
 
   return (
     <Container>
       <Row>
         <Col>
           <h1 className="my-5">
-            Welcome {cookies.user.name} {cookies.user.lastname}!
+            Welcome {user.name} {user.lastname}
           </h1>
         </Col>
       </Row>

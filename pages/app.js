@@ -2,16 +2,17 @@ import App from "../components/App";
 import Layout from "../components/Layout";
 import verifyToken from "../helpers/verifyToken";
 
-export default function PageApp() {
+export default function PageApp(props) {
   return (
     <Layout>
-      <App />
+      <App {...props} />
     </Layout>
   );
 }
 
 export async function getServerSideProps(ctx) {
   const token = ctx.req.cookies.token;
+  const user = ctx.req.cookies.user;
 
   if (!token) {
     return {
@@ -33,6 +34,6 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
-    props: {},
+    props: { user },
   };
 }
