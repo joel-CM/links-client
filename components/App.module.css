@@ -13,6 +13,9 @@
   background-color: #eee;
 }
 
-.btnDelete {
+.btnDelete,
+.btnEdit {
   cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0 2.5px;
 }

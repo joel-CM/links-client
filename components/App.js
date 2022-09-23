@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
 import CreateLink from "./CreateLink";
 import style from "./App.module.css";
+import { AiFillDelete } from "react-icons/ai";
+import { BiEdit } from "react-icons/bi";
+import * as alerts from "../helpers/alerts";
 
 export default function App({ user, token }) {
   const [links, setLinks] = useState([]);
@@ -22,14 +25,17 @@ export default function App({ user, token }) {
   };
 
   const deleteLink = async (id) => {
+    const { isConfirmed } = await alerts.alertDeleteLink();
+    if (!isConfirmed) return;
+
     const res = await fetch(`http://localhost:3001/link/delete/${id}`, {
       method: "DELETE",
       headers: { token },
     });
     const data = await res.json();
-    if (data.error) return alert(data.msg);
+    if (data.error) return alerts.alertError(data.msg);
     setChangeStateLinks(!changeStateLinks);
-    alert(data.msg);
+    alerts.tempSuccessAlert(data.msg, 1000);
   };
 
   useEffect(() => {
@@ -56,14 +62,13 @@ export default function App({ user, token }) {
         </Row>
         <div className={style.linksContainer}>
           {links.map((e) => (
-            <span className={style.link}>
-              {e.link}{" "}
-              <span
+            <span key={e.id} className={style.link}>
+              {e.link}
+              <AiFillDelete
                 className={style.btnDelete}
                 onClick={() => deleteLink(e.id)}
-              >
-                delete
-              </span>
+              />
+              <BiEdit className={style.btnEdit} />
             </span>
           ))}
         </div>
