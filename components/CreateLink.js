@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
+import { tempErrorAlert } from "../helpers/alerts";
 
-export default function App(props) {
+export default function CreateLink(props) {
   const link = useRef();
 
   const handleSubmit = async (e) => {
@@ -12,7 +13,7 @@ export default function App(props) {
       body: JSON.stringify({ link: link.current.value }),
     });
     const data = await res.json();
-    if (data.error) return alert(data.msg);
+    if (data.error) return tempErrorAlert(data.msg, 1000);
     props.setChangeStateLinks(!props.changeStateLinks);
     props.handleClose();
   };
