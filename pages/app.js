@@ -34,6 +34,6 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
-    props: { user },
+    props: { user, token },
   };
 }
