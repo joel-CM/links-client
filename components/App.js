@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
 import CreateLink from "./CreateLink";
+import style from "./App.module.css";
 
 export default function App({ user, token }) {
   const [links, setLinks] = useState([]);
@@ -18,6 +19,17 @@ export default function App({ user, token }) {
     });
     const data = await res.json();
     setLinks(data);
+  };
+
+  const deleteLink = async (id) => {
+    const res = await fetch(`http://localhost:3001/link/delete/${id}`, {
+      method: "DELETE",
+      headers: { token },
+    });
+    const data = await res.json();
+    if (data.error) return alert(data.msg);
+    setChangeStateLinks(!changeStateLinks);
+    alert(data.msg);
   };
 
   useEffect(() => {
@@ -42,17 +54,19 @@ export default function App({ user, token }) {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col md={5} className="mx-auto">
-            <Stack gap={3}>
-              {links.map((e) => (
-                <div key={e.id} className="bg-light border">
-                  {e.link}
-                </div>
-              ))}
-            </Stack>
-          </Col>
-        </Row>
+        <div className={style.linksContainer}>
+          {links.map((e) => (
+            <span className={style.link}>
+              {e.link}{" "}
+              <span
+                className={style.btnDelete}
+                onClick={() => deleteLink(e.id)}
+              >
+                delete
+              </span>
+            </span>
+          ))}
+        </div>
       </Container>
 
       {/* Modal create link */}
