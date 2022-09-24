@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
-import style from "./App.module.css";
 import CreateLink from "./CreateLink";
 import UpdateLink from "./UpdateLink";
-import { AiFillDelete, AiOutlineCopy } from "react-icons/ai";
-import { BiEdit } from "react-icons/bi";
-import * as helperLinks from "../helpers/links";
+import Link from "./Link";
+import { getLinks } from "../helpers/links";
 
 export default function App({ user, token }) {
   const [links, setLinks] = useState([]);
@@ -24,7 +22,7 @@ export default function App({ user, token }) {
   };
 
   useEffect(() => {
-    helperLinks.getLinks(token, setLinks);
+    getLinks(token, setLinks);
   }, [changeStateLinks]);
 
   return (
@@ -48,35 +46,14 @@ export default function App({ user, token }) {
             </div>
           </Col>
         </Row>
-        <div className={style.linksContainer}>
-          {links.map((e) => (
-            <span key={e.id} className={style.link}>
-              {e.link}
-              <AiOutlineCopy
-                title="Copy URL"
-                className={style.btnCopy}
-                onClick={() => helperLinks.handleCopyUrl(e.link)}
-              />
-              <BiEdit
-                className={style.btnEdit}
-                title="Edit URL"
-                onClick={() => handleShowUpdateLink(e.id)}
-              />
-              <AiFillDelete
-                className={style.btnDelete}
-                title="Delete URL"
-                onClick={() =>
-                  helperLinks.deleteLink(
-                    token,
-                    e.id,
-                    setChangeStateLinks,
-                    changeStateLinks
-                  )
-                }
-              />
-            </span>
-          ))}
-        </div>
+        {/* Link component */}
+        <Link
+          links={links}
+          token={token}
+          handleShowUpdateLink={handleShowUpdateLink}
+          setChangeStateLinks={setChangeStateLinks}
+          changeStateLinks={changeStateLinks}
+        />
       </Container>
 
       {/* Modal create link */}
