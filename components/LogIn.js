@@ -47,6 +47,7 @@ export default function PageLogIn() {
                 type="email"
                 name="email"
                 placeholder="Enter email"
+                autoFocus
                 onChange={handleChange}
               />
             </Form.Group>

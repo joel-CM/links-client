@@ -51,6 +51,7 @@ export default function PageSignUp() {
                 type="name"
                 name="name"
                 placeholder="Enter name"
+                autoFocus
                 onChange={handleChange}
               />
             </Form.Group>

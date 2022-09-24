@@ -4,10 +4,11 @@ import { useCookies } from "react-cookie";
 
 export default function Layout(props) {
   const router = useRouter();
-  const [cookie, setCookie, removeCookie] = useCookies(["token"]);
+  const [cookie, setCookie, removeCookie] = useCookies(["token", "user"]);
 
   const handleLogOut = () => {
     removeCookie("token");
+    removeCookie("user");
     router.push("/");
   };
 

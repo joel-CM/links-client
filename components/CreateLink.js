@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
-import { tempErrorAlert } from "../helpers/alerts";
 import { createLink } from "../helpers/links";
 
 export default function CreateLink(props) {
@@ -29,6 +28,7 @@ export default function CreateLink(props) {
             <Form.Control
               type="link"
               ref={link}
+              autoFocus
               placeholder="Enter a new link"
             />
           </Form.Group>

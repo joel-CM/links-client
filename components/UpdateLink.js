@@ -18,7 +18,7 @@ export default function UpdateLink(props) {
     const data = await res.json();
     if (data.error) return tempErrorAlert(data.msg, 1000);
     props.setChangeStateLinks(!props.changeStateLinks);
-    
+
     props.handleClose();
   };
 
@@ -48,7 +48,12 @@ export default function UpdateLink(props) {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formGroupLink">
             <Form.Label>Link: </Form.Label>
-            <Form.Control type="link" ref={link} placeholder="Update link" />
+            <Form.Control
+              type="link"
+              ref={link}
+              placeholder="Update link"
+              autoFocus
+            />
           </Form.Group>
         </Form>
       </Modal.Body>
