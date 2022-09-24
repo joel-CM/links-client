@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { tempErrorAlert } from "../helpers/alerts";
 
 export default function PageLogIn() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function PageLogIn() {
       body: JSON.stringify(state),
     });
     const data = await res.json();
-    if (data.error) return alert(data.msg);
+    if (data.error) return tempErrorAlert(data.msg, 1000);
     setCookie("token", data.msg.token, { path: "/", maxAge: 86400 * 7 });
     setCookie("user", data.msg.user, { path: "/", maxAge: 86400 * 7 });
     router.push("/app");

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { tempErrorAlert } from "../helpers/alerts";
 
 export default function PageSignUp() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function PageSignUp() {
       body: JSON.stringify(state),
     });
     const data = await res.json();
-    if (data.error) return alert(data.msg);
+    if (data.error) return tempErrorAlert(data.msg, 1000);
     setCookie("name", "loged", { path: "/" });
     router.push("/login");
   };

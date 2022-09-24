@@ -46,6 +46,9 @@ export default function App({ user, token }) {
             </div>
           </Col>
         </Row>
+        {!links.length && (
+          <h4 className="text-center my-5">There are no links yet.</h4>
+        )}
         {/* Link component */}
         <Link
           links={links}
