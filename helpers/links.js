@@ -10,6 +10,24 @@ export const getLinks = async (token, setLinks) => {
   setLinks(data);
 };
 
+export const createLink = async (
+  token,
+  link,
+  setChangeStateLinks,
+  changeStateLinks,
+  handleClose
+) => {
+  const res = await fetch("http://localhost:3001/link/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", token },
+    body: JSON.stringify({ link }),
+  });
+  const data = await res.json();
+  if (data.error) return alerts.tempErrorAlert(data.msg, 1000);
+  setChangeStateLinks(!changeStateLinks);
+  handleClose();
+};
+
 export const deleteLink = async (
   token,
   id,

@@ -1,21 +1,20 @@
 import { useRef } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { tempErrorAlert } from "../helpers/alerts";
+import { createLink } from "../helpers/links";
 
 export default function CreateLink(props) {
   const link = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3001/link/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", token: props.token },
-      body: JSON.stringify({ link: link.current.value }),
-    });
-    const data = await res.json();
-    if (data.error) return tempErrorAlert(data.msg, 1000);
-    props.setChangeStateLinks(!props.changeStateLinks);
-    props.handleClose();
+    createLink(
+      props.token,
+      link.current.value,
+      props.setChangeStateLinks,
+      props.cangeStateLinks,
+      props.handleClose
+    );
   };
 
   return (
