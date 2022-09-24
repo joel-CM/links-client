@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Stack, Button } from "react-bootstrap";
 import CreateLink from "./CreateLink";
+import UpdateLink from "./UpdateLink";
 import style from "./App.module.css";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineCopy } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
+import copy from "copy-to-clipboard";
 import * as alerts from "../helpers/alerts";
 
 export default function App({ user, token }) {
   const [links, setLinks] = useState([]);
+  const [linkToUpdate, setLinkToUpdate] = useState(null);
   const [showCreateLink, setShowCreateLink] = useState(false);
+  const [showUpdateLink, setShowUpdateLink] = useState(false);
   const [changeStateLinks, setChangeStateLinks] = useState(false);
   user = JSON.parse(user);
 
-  const handleClose = () => setShowCreateLink(false);
-  const handleShow = () => setShowCreateLink(true);
+  const handleCloseCreateLink = () => setShowCreateLink(false);
+  const handleShowCreateLink = () => setShowCreateLink(true);
+  const handleCloseUpdateLink = () => setShowUpdateLink(false);
+  const handleShowUpdateLink = (idLink) => {
+    setLinkToUpdate(idLink);
+    setShowUpdateLink(true);
+  };
 
   const getLinks = async () => {
     const res = await fetch("http://localhost:3001/link", {
@@ -38,6 +47,15 @@ export default function App({ user, token }) {
     alerts.tempSuccessAlert(data.msg, 1000);
   };
 
+  const handleCopyUrl = (url) => {
+    const copied = copy(url);
+    if (copied) {
+      alerts.tempSuccessAlert(`${url} copied!`, 1000);
+    } else {
+      alerts.tempErrorAlert("Failed to copy", 1000);
+    }
+  };
+
   useEffect(() => {
     getLinks();
   }, [changeStateLinks]);
@@ -54,7 +72,10 @@ export default function App({ user, token }) {
           <Col>
             <div className="d-flex align-items-center">
               <h5>Your links: </h5>
-              <Button variant="outline-dark mx-2" onClick={handleShow}>
+              <Button
+                variant="outline-dark mx-2"
+                onClick={handleShowCreateLink}
+              >
                 NEW
               </Button>
             </div>
@@ -66,22 +87,45 @@ export default function App({ user, token }) {
               {e.link}
               <AiFillDelete
                 className={style.btnDelete}
+                title="Delete URL"
                 onClick={() => deleteLink(e.id)}
               />
-              <BiEdit className={style.btnEdit} />
+              <BiEdit
+                className={style.btnEdit}
+                title="Edit URL"
+                onClick={() => handleShowUpdateLink(e.id)}
+              />
+              <AiOutlineCopy
+                title="Copy URL"
+                className={style.btnCopy}
+                onClick={() => handleCopyUrl(e.link)}
+              />
             </span>
           ))}
         </div>
       </Container>
 
       {/* Modal create link */}
-      <CreateLink
-        show={showCreateLink}
-        handleClose={handleClose}
-        token={token}
-        changeStateLinks={changeStateLinks}
-        setChangeStateLinks={setChangeStateLinks}
-      />
+      {showCreateLink && (
+        <CreateLink
+          show={showCreateLink}
+          handleClose={handleCloseCreateLink}
+          token={token}
+          changeStateLinks={changeStateLinks}
+          setChangeStateLinks={setChangeStateLinks}
+        />
+      )}
+      {/* Modal update link */}
+      {showUpdateLink && (
+        <UpdateLink
+          show={showUpdateLink}
+          handleClose={handleCloseUpdateLink}
+          token={token}
+          changeStateLinks={changeStateLinks}
+          setChangeStateLinks={setChangeStateLinks}
+          linkToUpdate={linkToUpdate}
+        />
+      )}
     </>
   );
 }

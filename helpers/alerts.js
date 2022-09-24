@@ -46,6 +46,7 @@ export const tempSuccessAlert = async (msg, timer) => {
     icon: "success",
     title: "Success!",
     text: msg,
+    showConfirmButton: false,
     timer: timer,
   });
 };
