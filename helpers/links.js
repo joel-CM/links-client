@@ -2,7 +2,7 @@ import copy from "copy-to-clipboard";
 import * as alerts from "./alerts";
 
 export const getLinks = async (token, setLinks) => {
-  const res = await fetch("http://localhost:3001/link", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/link`, {
     method: "GET",
     headers: { token },
   });
@@ -17,7 +17,7 @@ export const createLink = async (
   changeStateLinks,
   handleClose
 ) => {
-  const res = await fetch("http://localhost:3001/link/create", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/link/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json", token },
     body: JSON.stringify({ link }),
@@ -37,7 +37,7 @@ export const deleteLink = async (
   const { isConfirmed } = await alerts.alertDeleteLink();
   if (!isConfirmed) return;
 
-  const res = await fetch(`http://localhost:3001/link/delete/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/link/delete/${id}`, {
     method: "DELETE",
     headers: { token },
   });

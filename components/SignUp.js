@@ -23,7 +23,7 @@ export default function PageSignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3001/users/signup", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/users/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -18,7 +18,7 @@ export default function PageLogIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3001/users/login", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

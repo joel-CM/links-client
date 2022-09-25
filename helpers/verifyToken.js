@@ -1,5 +1,5 @@
 const verifyToken = async (token) => {
-  const res = await fetch(`http://localhost:3001/users/verify`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/users/verify`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

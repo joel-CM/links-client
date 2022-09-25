@@ -8,7 +8,7 @@ export default function UpdateLink(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetch(
-      `http://localhost:3001/link/update/${props.linkToUpdate}`,
+      `${process.env.NEXT_PUBLIC_API}/link/update/${props.linkToUpdate}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json", token: props.token },
@@ -24,7 +24,7 @@ export default function UpdateLink(props) {
 
   const getLinkBYId = async () => {
     const res = await fetch(
-      `http://localhost:3001/link/${props.linkToUpdate}`,
+      `${process.env.NEXT_PUBLIC_API}/link/${props.linkToUpdate}`,
       {
         method: "GET",
         headers: { token: props.token },
