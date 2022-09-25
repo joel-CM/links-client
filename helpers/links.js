@@ -10,6 +10,19 @@ export const getLinks = async (token, setLinks) => {
   setLinks(data);
 };
 
+export const getLinkBYId = async (token, link, linkToUpdate) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API}/link/${linkToUpdate}`,
+    {
+      method: "GET",
+      headers: { token },
+    }
+  );
+  const data = await res.json();
+  if (data.error) return alerts.tempErrorAlert(data.msg, 1000);
+  link.current.value = data.link;
+};
+
 export const createLink = async (
   token,
   link,
@@ -45,6 +58,28 @@ export const deleteLink = async (
   if (data.error) return alerts.alertError(data.msg);
   setChangeStateLinks(!changeStateLinks);
   alerts.tempSuccessAlert(data.msg, 1000);
+};
+
+export const updateLink = async (
+  token,
+  linkToUpdate,
+  link,
+  setChangeStateLinks,
+  changeStateLinks,
+  handleClose
+) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API}/link/update/${linkToUpdate}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", token },
+      body: JSON.stringify({ link }),
+    }
+  );
+  const data = await res.json();
+  if (data.error) return alerts.tempErrorAlert(data.msg, 1000);
+  setChangeStateLinks(!changeStateLinks);
+  handleClose();
 };
 
 export const handleCopyUrl = (url) => {

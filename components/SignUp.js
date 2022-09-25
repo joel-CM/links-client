@@ -7,6 +7,7 @@ import { tempErrorAlert } from "../helpers/alerts";
 export default function PageSignUp() {
   const router = useRouter();
   const [cookie, setCookie] = useCookies(["name"]);
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState({
     name: "",
     lastname: "",
@@ -23,6 +24,7 @@ export default function PageSignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/users/signup`, {
       method: "POST",
       headers: {
@@ -31,6 +33,7 @@ export default function PageSignUp() {
       body: JSON.stringify(state),
     });
     const data = await res.json();
+    setLoading(false);
     if (data.error) return tempErrorAlert(data.msg, 1000);
     setCookie("name", "loged", { path: "/" });
     router.push("/login");
@@ -85,7 +88,7 @@ export default function PageSignUp() {
             </Form.Group>
             <Form.Group className="mb-3" controlId="">
               <Button type="submit" variant="primary" className="d-clock w-100">
-                SignUp
+                {loading ? "loading..." : "SignUp"}
               </Button>
             </Form.Group>
           </Form>

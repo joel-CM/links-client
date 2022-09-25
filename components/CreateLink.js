@@ -1,19 +1,22 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { createLink } from "../helpers/links";
 
 export default function CreateLink(props) {
   const link = useRef();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createLink(
+    setLoading(true);
+    await createLink(
       props.token,
       link.current.value,
       props.setChangeStateLinks,
       props.cangeStateLinks,
       props.handleClose
     );
+    setLoading(false);
   };
 
   return (
@@ -39,7 +42,7 @@ export default function CreateLink(props) {
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Create
+          {loading ? "loading..." : "Create"}
         </Button>
       </Modal.Footer>
     </Modal>

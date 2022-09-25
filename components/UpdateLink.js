@@ -1,42 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { tempErrorAlert } from "../helpers/alerts";
+import { updateLink, getLinkBYId } from "../helpers/links";
 
 export default function UpdateLink(props) {
   const link = useRef();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/link/update/${props.linkToUpdate}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", token: props.token },
-        body: JSON.stringify({ link: link.current.value }),
-      }
+    setLoading(true);
+    await updateLink(
+      props.token,
+      props.linkToUpdate,
+      link.current.value,
+      props.setChangeStateLinks,
+      props.changeStateLinks,
+      props.handleClose
     );
-    const data = await res.json();
-    if (data.error) return tempErrorAlert(data.msg, 1000);
-    props.setChangeStateLinks(!props.changeStateLinks);
-
-    props.handleClose();
-  };
-
-  const getLinkBYId = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/link/${props.linkToUpdate}`,
-      {
-        method: "GET",
-        headers: { token: props.token },
-      }
-    );
-    const data = await res.json();
-    if (data.error) return tempErrorAlert(data.msg, 1000);
-    link.current.value = data.link;
+    setLoading(false);
   };
 
   useEffect(() => {
-    getLinkBYId();
+    getLinkBYId(props.token, link, props.linkToUpdate);
   }, []);
 
   return (
@@ -62,7 +48,7 @@ export default function UpdateLink(props) {
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Update
+          {loading ? "loading..." : "Update"}
         </Button>
       </Modal.Footer>
     </Modal>

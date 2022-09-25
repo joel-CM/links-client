@@ -8,6 +8,7 @@ export default function PageLogIn() {
   const router = useRouter();
   const [cookie, setCookie] = useCookies(["token", "user"]);
   const [state, setState] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setState({
@@ -18,6 +19,7 @@ export default function PageLogIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API}/users/login`, {
       method: "POST",
       headers: {
@@ -26,6 +28,7 @@ export default function PageLogIn() {
       body: JSON.stringify(state),
     });
     const data = await res.json();
+    setLoading(false);
     if (data.error) return tempErrorAlert(data.msg, 1000);
     setCookie("token", data.msg.token, { path: "/", maxAge: 86400 * 7 });
     setCookie("user", data.msg.user, { path: "/", maxAge: 86400 * 7 });
@@ -67,7 +70,7 @@ export default function PageLogIn() {
                 variant="primary d-block w-100"
                 className="d-block w-100"
               >
-                LogIn
+                {loading ? "loading..." : "LogIn"}
               </Button>
             </Form.Group>
           </Form>
