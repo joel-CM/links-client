@@ -7,6 +7,7 @@ export const getLinks = async (token, setLinks) => {
     headers: { token },
   });
   const data = await res.json();
+  if (data.error) return alerts.alertError(data.msg);
   setLinks(data);
 };
 
