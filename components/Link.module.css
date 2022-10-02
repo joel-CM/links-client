@@ -1,22 +1,42 @@
 .linksContainer {
+  background: red;
   margin: 2rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 300px));
 }
 
 .linksContainer .link {
-  padding: 1rem;
+  background-color: #eee;
+  padding: 0.5rem 0;
   margin: 1rem;
   border-radius: 1rem;
-  background-color: #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.link .linkUrl::-webkit-scrollbar {
+  display: none;
+}
+
+.linkUrl {
+  flex-grow: 1;
+  margin-left: 5px;
+  overflow-x: auto;
+  cursor: pointer;
+}
+
+.linkOptions {
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
 }
 
 .btnDelete,
 .btnEdit,
 .btnCopy {
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin: 0 2.5px;
 }
