@@ -1,8 +1,8 @@
 .linksContainer {
-  background: red;
   margin: 2rem 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 300px));
+  place-content: center;
 }
 
 .linksContainer .link {
